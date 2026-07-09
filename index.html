@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Flavia & Salvatore - 19 Giugno 2027</title>
+  <meta name="description" content="Invito digitale matrimonio Flavia e Salvatore - 19 Giugno 2027" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <main class="page">
+
+    <section class="hero" id="home">
+      <div class="ambient ambient-one"></div>
+      <div class="ambient ambient-two"></div>
+      <div class="ambient ambient-three"></div>
+
+      <div class="hero-card reveal-start">
+        <span class="overline">Save the date</span>
+
+        <h1>Flavia &amp; Salvatore</h1>
+
+        <p class="date">19 Giugno 2027</p>
+
+        <p class="hero-subtitle">
+          Siamo felici di condividere con voi il giorno più bello della nostra vita.
+        </p>
+
+        <button class="primary-button" id="openButton">
+          Scopri i dettagli
+        </button>
+      </div>
+    </section>
+
+    <section class="intro reveal" id="details">
+      <div class="photo-card">
+        flavia-salvatore.jpg
+
+        <div class="intro-text">
+          <span class="overline">Il nostro matrimonio</span>
+
+          <h2>Ci sposiamo!</h2>
+
+          <p>
+            Con grande gioia vi invitiamo a celebrare insieme a noi
+            il nostro matrimonio.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="countdown-section reveal">
+      <span class="overline">Manca sempre meno</span>
+
+      <h2>Countdown al grande giorno</h2>
+
+      <div class="countdown" id="countdown">
+        <div>
+          <strong id="days">--</strong>
+          <span>giorni</span>
+        </div>
+
+        <div>
+          <strong id="hours">--</strong>
+          <span>ore</span>
+        </div>
+
+        <div>
+          <strong id="minutes">--</strong>
+          <span>minuti</span>
+        </div>
+
+        <div>
+          <strong id="seconds">--</strong>
+          <span>secondi</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="cards reveal">
+      <article class="event-card">
+        <div class="icon">⛪</div>
+
+        <h3>Cerimonia</h3>
+
+        <p>19 Giugno 2027</p>
+
+        <p>
+          <strong>Ore 15:30</strong>
+        </p>
+
+        <p>
+          Parrocchia Sant'Anna<br />
+          Balestrate
+        </p>
+
+        https://www.google.com/maps/search/?api=1&query=Parrocchia%20Sant%27Anna%20Balestrate
+          Come arrivare
+        </a>
+      </article>
+
+      <article class="event-card">
+        <div class="icon">🥂</div>
+
+        <h3>Ricevimento</h3>
+
+        <p>
+          <strong>Ore 18:30</strong>
+        </p>
+
+        <p>
+          Borgo degli Angeli<br />
+          Partinico
+        </p>
+
+        <a
+          class="secondary-button"
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://www.google.com/maps/search/?api=1&query=Borgo%20degli%20Angeli%20Partinico">
+          Apri mappa
+        </a>
+      </article>
+    </section>
+
+    <section class="timeline reveal">
+      <span class="overline">Programma</span>
+
+      <h2>La giornata</h2>
+
+      <div class="timeline-row">
+        <span>15:30</span>
+        <p>Cerimonia presso Parrocchia Sant'Anna a Balestrate</p>
+      </div>
+
+      <div class="timeline-row">
+        <span>18:30</span>
+        <p>Ricevimento presso Borgo degli Angeli a Partinico</p>
+      </div>
+
+      <div class="timeline-row">
+        <span>♥</span>
+        <p>Festeggeremo insieme famiglia, amici e amore.</p>
+      </div>
+    </section>
+
+    <section class="rsvp reveal">
+      <span class="overline">Conferma presenza</span>
+
+      <h2>Ci sarai?</h2>
+
+      <p>
+        Compila i campi qui sotto: verrà preparato automaticamente
+        un messaggio WhatsApp da inviare a Salvatore.
+      </p>
+
+      <form id="rsvpForm">
+        <input
+          required
+          id="name"
+          type="text"
+          placeholder="Nome e Cognome"
+        />
+
+        <input
+          required
+          id="guests"
+          type="number"
+          min="1"
+          placeholder="Numero partecipanti"
+        />
+
+        <textarea
+          id="notes"
+          rows="4"
+          placeholder="Intolleranze, allergie o note"></textarea>
+
+        <button class="primary-button" type="submit">
+          Prepara conferma WhatsApp
+        </button>
+      </form>
+
+      <p class="small-note">
+        Il messaggio verrà aperto su WhatsApp. Potrai modificarlo prima dell'invio.
+      </p>
+    </section>
+
+    <section class="contacts reveal">
+      <span class="overline">Contatti</span>
+
+      <h2>Per qualsiasi informazione</h2>
+
+      <div class="contact-grid">
+        tel:3924914903
+          <span>Salvatore</span>
+          <strong>392 491 4903</strong>
+        </a>
+
+        tel:3315056616
+          <span>Flavia</span>
+          <strong>331 505 6616</strong>
+        </a>
+      </div>
+    </section>
+
+    <footer>
+      <p>Non vediamo l'ora di festeggiare insieme a voi ❤️</p>
+      <p class="signature">Flavia &amp; Salvatore</p>
+    </footer>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
