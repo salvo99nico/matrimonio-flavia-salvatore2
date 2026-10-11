@@ -1,98 +1,113 @@
-const openButton = document.getElementById("openButton");
+const $ = (id) => document.getElementById(id);
 
-if (openButton) {
-  openButton.addEventListener("click", () => {
-    const detailsSection = document.getElementById("details");
+/* ====== DA CONFIGURARE ====== */
+const SALVATORE_PHONE = "393924914903";
+const IBAN = ""; // Scrivi qui l'IBAN per mostrarlo nella sezione regalo; lascia vuoto per nasconderlo
+/* ============================ */
 
-    if (detailsSection) {
-      detailsSection.scrollIntoView({
-        behavior: "smooth"
-      });
-    }
-  });
-}
+$("openButton")?.addEventListener("click", () => {
+  $("details")?.scrollIntoView({ behavior: "smooth" });
+});
 
+// Countdown
 const weddingDate = new Date("2027-06-19T15:30:00+02:00");
+const pad = (n) => String(n).padStart(2, "0");
 
 function updateCountdown() {
-  const now = new Date();
-  const diff = weddingDate - now;
-
-  const daysElement = document.getElementById("days");
-  const hoursElement = document.getElementById("hours");
-  const minutesElement = document.getElementById("minutes");
-  const secondsElement = document.getElementById("seconds");
-
-  if (!daysElement || !hoursElement || !minutesElement || !secondsElement) {
-    return;
-  }
-
+  const diff = weddingDate - new Date();
   if (diff <= 0) {
-    daysElement.textContent = "0";
-    hoursElement.textContent = "0";
-    minutesElement.textContent = "0";
-    secondsElement.textContent = "0";
+    ["days", "hours", "minutes", "seconds"].forEach((i) => ($(i).textContent = "0"));
     return;
   }
-
-  const seconds = Math.floor(diff / 1000);
-  const days = Math.floor(seconds / (60 * 60 * 24));
-  const hours = Math.floor((seconds % (60 * 60 * 24)) / (60 * 60));
-  const minutes = Math.floor((seconds % (60 * 60)) / 60);
-  const secs = seconds % 60;
-
-  daysElement.textContent = days;
-  hoursElement.textContent = hours;
-  minutesElement.textContent = minutes;
-  secondsElement.textContent = secs;
+  const s = Math.floor(diff / 1000);
+  $("days").textContent = Math.floor(s / 86400);
+  $("hours").textContent = pad(Math.floor((s % 86400) / 3600));
+  $("minutes").textContent = pad(Math.floor((s % 3600) / 60));
+  $("seconds").textContent = pad(s % 60);
 }
-
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
+// Animazioni allo scroll
 const observer = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-      }
-    });
-  },
-  {
-    threshold: 0.18
-  }
+  (entries) => entries.forEach((e) => e.isIntersecting && e.target.classList.add("visible")),
+  { threshold: 0.12 }
 );
-
-document.querySelectorAll(".reveal, .reveal-start").forEach((element) => {
-  observer.observe(element);
-});
-
+document.querySelectorAll(".reveal, .reveal-start").forEach((el) => observer.observe(el));
 setTimeout(() => {
-  document.querySelectorAll(".reveal-start").forEach((element) => {
-    element.classList.add("visible");
-  });
+  document.querySelectorAll(".reveal-start").forEach((el) => el.classList.add("visible"));
 }, 150);
 
-const rsvpForm = document.getElementById("rsvpForm");
-
-if (rsvpForm) {
-  rsvpForm.addEventListener("submit", function (event) {
-    event.preventDefault();
-
-    const name = document.getElementById("name").value.trim();
-    const guests = document.getElementById("guests").value.trim();
-    const notes = document.getElementById("notes").value.trim();
-
-    const textMessage =
-      `Ciao Flavia e Salvatore, confermo la mia presenza al matrimonio del 19 giugno 2027.\n\n` +
-      `Nome: ${name}\n` +
-      `Partecipanti: ${guests}\n` +
-      `Note: ${notes || "Nessuna"}`;
-
-    const salvatorePhone = "393924914903";
-    const whatsappUrl =
-      `https://wa.me/${salvatorePhone}?text=${encodeURIComponent(textMessage)}`;
-
-    window.open(whatsappUrl, "_blank");
+// IBAN facoltativo
+if (IBAN) {
+  $("ibanTxt").textContent = IBAN;
+  $("ibanBox").classList.remove("hide");
+  $("copyIban").addEventListener("click", () => {
+    navigator.clipboard?.writeText(IBAN);
+    $("copyIban").textContent = "Copiato!";
   });
 }
+
+// Modulo di conferma
+const form = $("rsvpForm");
+
+function refreshForm() {
+  const yes = form.presence.value === "si";
+  $("details-yes").classList.toggle("hide", !yes);
+  $("agesBox").classList.toggle("hide", !(yes && Number($("kids").value) > 0));
+}
+form.addEventListener("change", refreshForm);
+form.addEventListener("input", refreshForm);
+
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const name = $("name").value.trim();
+  const notes = $("notes").value.trim();
+  let text;
+
+  if (form.presence.value === "si") {
+    const adults = $("adults").value || "1";
+    const kids = Number($("kids").value) || 0;
+    const ages = $("ages").value.trim();
+    const allergies = $("allergies").value.trim();
+    text =
+      `Ciao Flavia e Salvatore, confermo la mia presenza al matrimonio del 19 giugno 2027.\n\n` +
+      `Nome: ${name}\n` +
+      `Adulti: ${adults}\n` +
+      `Bambini: ${kids}${kids > 0 ? ` (età: ${ages || "non indicata"})` : ""}\n` +
+      `Allergie/intolleranze: ${allergies || "Nessuna"}\n` +
+      `Messaggio: ${notes || "-"}`;
+  } else {
+    text =
+      `Ciao Flavia e Salvatore, purtroppo non potrò essere presente al matrimonio del 19 giugno 2027.\n\n` +
+      `Nome: ${name}\n` +
+      `Messaggio: ${notes || "Vi auguro tanta felicità!"}`;
+  }
+
+  window.open(`https://wa.me/${SALVATORE_PHONE}?text=${encodeURIComponent(text)}`, "_blank");
+});
+
+// Petali che cadono
+(function () {
+  const box = document.querySelector(".petals");
+  if (!box) return;
+  const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const count = window.innerWidth < 720 ? 16 : 30;
+  const colors = ["#c46f4d", "#b85c3b", "#d88b68", "#9f4f38", "#e5a077"];
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement("span");
+    const w = rnd(10, 22);
+    p.className = "petal";
+    p.style.width = w + "px";
+    p.style.height = w * 1.3 + "px";
+    p.style.left = rnd(0, 100) + "%";
+    p.style.background = `linear-gradient(135deg, ${colors[i % colors.length]}, ${colors[(i + 2) % colors.length]})`;
+    p.style.setProperty("--dx", rnd(-120, 120) + "px");
+    p.style.setProperty("--rot", rnd(240, 720) + "deg");
+    p.style.setProperty("--dur", rnd(11, 20) + "s");
+    p.style.setProperty("--delay", -rnd(0, 20) + "s");
+    if (still) { p.style.top = rnd(0, 95) + "%"; p.style.transform = `rotate(${rnd(0, 360)}deg)`; }
+    box.appendChild(p);
+  }
+})();
